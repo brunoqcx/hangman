@@ -41,4 +41,28 @@ defmodule ImplGameTest do
 
     assert MapSet.equal?(game.used, MapSet.new(["a", "b"]))
   end
+
+  test "a good guess is reconigzed" do
+    game = Game.new_game("abc")
+
+    { game, _tally } = Game.make_move(game, "a")
+
+    assert game.game_state == :good_guess
+  end
+
+  test "a bad guess is reconigzed" do
+    game = Game.new_game("abc")
+
+    { game, _tally } = Game.make_move(game, "x")
+
+    assert game.game_state == :bad_guess
+  end
+
+  test "the word is partially revelead with a good guess" do
+    game = Game.new_game("abc")
+
+    { _game, tally } = Game.make_move(game, "a")
+
+    assert tally.letters == ["a", "_", "_"]
+  end
 end
